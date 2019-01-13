@@ -304,6 +304,10 @@
                 if (self.debug || ReconnectingWebSocket.debugAll) {
                     console.debug('ReconnectingWebSocket', 'send', self.url, data);
                 }
+                //if socket is connecting wait 500ms to retry send the message
+                if(ws.readyState === 0){
+                    return setTimeout(()=>this.send(data),500);
+                }
                 return ws.send(data);
             } else {
                 throw 'INVALID_STATE_ERR : Pausing to reconnect websocket';
